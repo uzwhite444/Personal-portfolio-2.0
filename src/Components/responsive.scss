@@ -1,0 +1,281 @@
+/* 
+ * Global Responsive Utilities & Mixins
+ * Complete responsive design system for portfolio
+ */
+
+/* ============================================
+   BREAKPOINTS & MEDIA QUERY MIXINS
+   ============================================ */
+
+// Device breakpoints
+$breakpoint-xs: 320px;
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-2xl: 1400px;
+
+// Mixins for responsive design
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'xs' {
+    @media (max-width: #{$breakpoint-xs + 1px}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == 'sm' {
+    @media (max-width: #{$breakpoint-sm + 1px}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == 'md' {
+    @media (max-width: #{$breakpoint-md + 1px}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == 'lg' {
+    @media (max-width: #{$breakpoint-lg + 1px}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == 'xl' {
+    @media (max-width: #{$breakpoint-xl + 1px}) {
+      @content;
+    }
+  }
+  @else if $breakpoint == '2xl' {
+    @media (max-width: #{$breakpoint-2xl + 1px}) {
+      @content;
+    }
+  }
+}
+
+@mixin min-width($width) {
+  @media (min-width: #{$width}) {
+    @content;
+  }
+}
+
+@mixin max-width($width) {
+  @media (max-width: #{$width}) {
+    @content;
+  }
+}
+
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY HELPERS
+   ============================================ */
+
+@mixin responsive-font($mobile, $tablet, $desktop) {
+  font-size: $mobile;
+  
+  @include min-width($breakpoint-md) {
+    font-size: $tablet;
+  }
+  
+  @include min-width($breakpoint-lg) {
+    font-size: $desktop;
+  }
+}
+
+@mixin responsive-spacing($mobile, $tablet: null, $desktop: null) {
+  $tablet: $tablet or $mobile * 1.3;
+  $desktop: $desktop or $mobile * 1.6;
+  
+  margin: $mobile;
+  
+  @include min-width($breakpoint-md) {
+    margin: $tablet;
+  }
+  
+  @include min-width($breakpoint-lg) {
+    margin: $desktop;
+  }
+}
+
+/* ============================================
+   DEVICE-SPECIFIC FIXES
+   ============================================ */
+
+// iPhone specific (notch support)
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+// Touch device optimizations
+@media (hover: none) and (pointer: coarse) {
+  // Increase touch targets to minimum 44x44px
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: max(0.5rem, (44px - 1em) / 2);
+  }
+  
+  // Remove hover effects on touch devices
+  a:hover, button:hover {
+    transform: none;
+  }
+}
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  body {
+    color-scheme: dark;
+  }
+}
+
+// High resolution displays
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  // Thinner borders on high-res displays
+  border {
+    border-width: 0.5px;
+  }
+}
+
+/* ============================================
+   LAYOUT CONTAINERS - RESPONSIVE
+   ============================================ */
+
+@mixin responsive-grid($cols-xs, $cols-sm, $cols-md, $cols-lg, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($cols-xs, 1fr);
+  gap: $gap;
+  
+  @include min-width($breakpoint-sm) {
+    grid-template-columns: repeat($cols-sm, 1fr);
+  }
+  
+  @include min-width($breakpoint-md) {
+    grid-template-columns: repeat($cols-md, 1fr);
+  }
+  
+  @include min-width($breakpoint-lg) {
+    grid-template-columns: repeat($cols-lg, 1fr);
+  }
+}
+
+@mixin responsive-flex($direction-mobile: column, $direction-desktop: row) {
+  display: flex;
+  flex-direction: $direction-mobile;
+  
+  @include min-width($breakpoint-md) {
+    flex-direction: $direction-desktop;
+  }
+}
+
+/* ============================================
+   COMMON RESPONSIVE PATTERNS
+   ============================================ */
+
+// Hide/show utilities
+.mobile-only {
+  display: none;
+  
+  @include respond-to('md') {
+    display: block;
+  }
+}
+
+.tablet-only {
+  display: none;
+  
+  @include respond-to('md') {
+    display: block;
+  }
+  
+  @include min-width($breakpoint-lg) {
+    display: none;
+  }
+}
+
+.desktop-only {
+  display: block;
+  
+  @include respond-to('md') {
+    display: none;
+  }
+}
+
+.hide-mobile {
+  @include respond-to('md') {
+    display: none;
+  }
+}
+
+.hide-tablet {
+  @include respond-to('md') {
+    display: none;
+  }
+  
+  @include min-width($breakpoint-lg) {
+    display: block;
+  }
+}
+
+.hide-desktop {
+  @include min-width($breakpoint-lg) {
+    display: none;
+  }
+}
+
+/* ============================================
+   COMMON RESPONSIVE FIXES
+   ============================================ */
+
+// Fix for input zoom on iOS
+input, select, textarea {
+  font-size: 16px; // Prevents zoom on iOS
+  
+  @include min-width($breakpoint-md) {
+    font-size: 1rem;
+  }
+}
+
+// Prevent horizontal scroll on mobile
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// Responsive images
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Prevent layout shift from scrollbar
+html {
+  scrollbar-gutter: stable;
+}
+
+// Better touch target sizing
+@media (pointer: coarse) {
+  a, button {
+    padding: max(0.75rem, (44px - 1em) / 2) 1rem;
+  }
+}

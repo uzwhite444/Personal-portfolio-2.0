@@ -186,14 +186,102 @@ a {
   }
 }
 
+@media (max-width: 1024px) {
+  html {
+    font-size: 14.5px;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+}
+
 @media (max-width: 768px) {
   html {
     font-size: 14px;
+  }
+  
+  .container {
+    padding: 0 1.25rem;
+  }
+  
+  /* Improve readability on tablets */
+  body {
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 13.5px;
+  }
+  
+  .container {
+    padding: 0 1rem;
   }
 }
 
 @media (max-width: 480px) {
   html {
     font-size: 13px;
+  }
+  
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  /* Adjust spacing for small screens */
+  :root {
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+  }
+}
+
+@media (max-width: 375px) {
+  html {
+    font-size: 12.5px;
+  }
+  
+  .container {
+    padding: 0 0.5rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .container {
+    padding: 0.5rem var(--spacing-sm);
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  * {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  a:active, button:active {
+    opacity: 0.8;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
